@@ -1,0 +1,103 @@
+public class ArvoreAVL {
+    No raiz;
+
+    int altura(No n) {
+        if (n == null) return 0;
+        return n.altura;
+    }
+
+    int fatorBalanceamento(No n) {
+        if (n == null) return 0;
+        return altura(n.esquerda) - altura(n.direita);
+    }
+
+    No rotacaoDireita(No y) {
+        No x = y.esquerda;
+        No t2 = x.direita;
+
+        x.direita = y;
+        y.esquerda = t2;
+
+        y.altura = Math.max(altura(y.esquerda), altura(y.direita)) + 1;
+        x.altura = Math.max(altura(x.esquerda), altura(x.direita)) + 1;
+
+        return x;
+    }
+
+    No rotacaoEsquerda(No x) {
+        No y = x.direita;
+        No t2 = y.esquerda;
+
+        y.esquerda = x;
+        x.direita = t2;
+
+        x.altura = Math.max(altura(x.esquerda), altura(x.direita)) + 1;
+        y.altura = Math.max(altura(y.esquerda), altura(y.direita)) + 1;
+
+        return y;
+    }
+
+    No inserir(No no, int chave) {
+        if (no == null)
+            return new No(chave);
+
+        if (chave < no.chave)
+            no.esquerda = inserir(no.esquerda, chave);
+        else if (chave > no.chave)
+            no.direita = inserir(no.direita, chave);
+        else
+            return no;
+
+        no.altura = 1 + Math.max(altura(no.esquerda), altura(no.direita));
+
+        int balance = fatorBalanceamento(no);
+
+        if (balance > 1 && chave < no.esquerda.chave)
+            return rotacaoDireita(no);
+
+        if (balance < -1 && chave > no.direita.chave)
+            return rotacaoEsquerda(no);
+
+        if (balance > 1 && chave > no.esquerda.chave) {
+            no.esquerda = rotacaoEsquerda(no.esquerda);
+            return rotacaoDireita(no);
+        }
+
+        if (balance < -1 && chave < no.direita.chave) {
+            no.direita = rotacaoDireita(no.direita);
+            return rotacaoEsquerda(no);
+        }
+
+        return no;
+    }
+
+    void emOrdem(No no) {
+        if (no != null) {
+            emOrdem(no.esquerda);
+            System.out.print(no.chave + " ");
+            emOrdem(no.direita);
+        }
+    }
+
+    void imprimirNivel(No raiz, int nivel) {
+        if (raiz == null) return;
+        if (nivel == 1)
+            System.out.print(raiz.chave + " ");
+        else if (nivel > 1) {
+            imprimirNivel(raiz.esquerda, nivel - 1);
+            imprimirNivel(raiz.direita, nivel - 1);
+        }
+    }
+
+    int altura() {
+        return altura(raiz);
+    }
+
+    void imprimirPorNiveis() {
+        int h = altura();
+        for (int i = 1; i <= h; i++) {
+            imprimirNivel(raiz, i);
+            System.out.println();
+        }
+    }
+}
