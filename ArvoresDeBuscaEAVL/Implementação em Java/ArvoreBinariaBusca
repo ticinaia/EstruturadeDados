@@ -1,0 +1,48 @@
+public class ArvoreBinariaBusca {
+    No raiz;
+
+    No inserir(No raiz, int chave) {
+        if (raiz == null) return new No(chave);
+
+        if (chave < raiz.chave)
+            raiz.esquerda = inserir(raiz.esquerda, chave);
+        else if (chave > raiz.chave)
+            raiz.direita = inserir(raiz.direita, chave);
+
+        return raiz;
+    }
+
+    void emOrdem(No raiz) {
+        if (raiz != null) {
+            emOrdem(raiz.esquerda);
+            System.out.print(raiz.chave + " ");
+            emOrdem(raiz.direita);
+        }
+    }
+
+    int altura(No raiz) {
+        if (raiz == null) return 0;
+        int altEsq = altura(raiz.esquerda);
+        int altDir = altura(raiz.direita);
+        return Math.max(altEsq, altDir) + 1;
+    }
+
+    void imprimirNivel(No raiz, int nivel) {
+        if (raiz == null) return;
+        if (nivel == 1)
+            System.out.print(raiz.chave + " ");
+        else if (nivel > 1) {
+            imprimirNivel(raiz.esquerda, nivel - 1);
+            imprimirNivel(raiz.direita, nivel - 1);
+        }
+    }
+
+    void imprimirPorNiveis() {
+        int h = altura(raiz);
+        for (int i = 1; i <= h; i++) {
+            imprimirNivel(raiz, i);
+            System.out.println();
+        }
+    }
+}
+
