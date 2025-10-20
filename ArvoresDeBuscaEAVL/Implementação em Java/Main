@@ -1,0 +1,25 @@
+public class Main {
+    public static void main(String[] args) {
+        int[] valores = {1, 2, 3, 10, 4, 5, 9, 7, 8, 6};
+
+        ArvoreBinariaBusca abb = new ArvoreBinariaBusca();
+        ArvoreAVL avl = new ArvoreAVL();
+
+        for (int v : valores) {
+            abb.raiz = abb.inserir(abb.raiz, v);
+            avl.raiz = avl.inserir(avl.raiz, v);
+        }
+
+        System.out.println("Árvore binária de busca (ABB)");
+        System.out.print("Percurso em-ordem: ");
+        abb.emOrdem(abb.raiz);
+        System.out.println("\nEstrutura por níveis:");
+        abb.imprimirPorNiveis();
+
+        System.out.println("\nÁrvore AVL");
+        System.out.print("Percurso em-ordem: ");
+        avl.emOrdem(avl.raiz);
+        System.out.println("\nEstrutura por níveis:");
+        avl.imprimirPorNiveis();
+    }
+}
